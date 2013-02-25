@@ -5,7 +5,7 @@ defined('SYSPATH') or die('No direct script access.');
 /**
  * System for sending email using Swift Mailer integrates into any web app written
  * in PHP 5, offering a flexible and elegant object-oriented approach to sending
- * emails with a multitude of features. 
+ * emails with a multitude of features.
  *
  * @package		Kohana/Mailer
  * @author		Eduardo Pacheco
@@ -158,7 +158,7 @@ class Kohana_Mailer {
      * @param  string	method
      * @param  data		array
      * @return Mailer
-     * 
+     *
      * */
     public static function factory($mailer_name = NULL, $method = NULL, $data = array()) {
         $class = ( $mailer_name !== NULL ) ? 'Mailer_' . ucfirst($mailer_name) : 'Mailer';
@@ -167,7 +167,7 @@ class Kohana_Mailer {
         if ($method === NULL) {
             return $class;
         } else {
-            //see if the method exists	
+            //see if the method exists
             if (method_exists($class, $method)) {
                 //call the method
                 call_user_func_array(array($class, $method), array($data));
@@ -190,7 +190,7 @@ class Kohana_Mailer {
      * @access public
      * @param  string mailer_name
      * @return Mailer
-     * 
+     *
      * */
     public static function instance($mailer_name = NULL, $config = "default") {
         $className = ( $mailer_name !== NULL) ? 'Mailer_' . ucfirst($mailer_name) : "Mailer";
@@ -205,13 +205,13 @@ class Kohana_Mailer {
      * Connect to server
      *
      * @access public
-     * @param  string	config	
+     * @param  string	config
      * @return object	Swift_Mailer
-     * 
+     *
      * */
     public function connect($config = "default") {
         // Load configuration
-        $config = Kohana::config('mailer.' . $config);
+        $config = Kohana::$config->load('mailer.' . $config);
 
         $transport = ( is_null($config['transport']) ) ? 'native' : $config['transport'];
         $config = $config['options'];
@@ -227,9 +227,9 @@ class Kohana_Mailer {
      * Use the call object to configure the sending
      *
      * @access public
-     * @param  void	
+     * @param  void
      * @return void
-     * 
+     *
      * */
     public function __call($name, $args = array()) {
         $pattern = '/^(type|from|to|cc|bcc|subject|data|attachments|batch_send|config|html|text|debug)$/i';
@@ -249,7 +249,7 @@ class Kohana_Mailer {
         if (preg_match('/^sen(d|t)_/i', $name)) {
             $method = substr($name, 5, strlen($name));
 
-            //see if the method exists	
+            //see if the method exists
             if (method_exists($this, $method)) {
                 //call the method
                 call_user_func_array(array($this, $method), $args);
@@ -272,7 +272,7 @@ class Kohana_Mailer {
      * @access public
      * @param  string	method
      * @return object
-     * 
+     *
      * */
     public function setup($method = NULL) {
         $this->message = Swift_Message::newInstance();
@@ -358,7 +358,7 @@ class Kohana_Mailer {
      * @access public
      * @param  void
      * @return bool	Mailer_result
-     * 
+     *
      * */
     public function send() {
         if ($this->message === NULL) {
